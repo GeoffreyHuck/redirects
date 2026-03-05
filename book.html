@@ -4,26 +4,82 @@
     <title>The Extrovert Switch</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px 20px; }
-        .btn { display: block; max-width: 300px; margin: 15px auto; padding: 15px; 
-               background: #FF9900; color: black; text-decoration: none; 
-               font-weight: bold; border-radius: 5px; }
+        body { 
+            font-family: sans-serif; 
+            text-align: center; 
+            padding: 50px 20px; 
+        }
+        .btn { 
+            display: block; 
+            max-width: 300px; 
+            margin: 15px auto; 
+            padding: 15px; 
+            background: #FF9900; 
+            color: black; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border-radius: 5px;
+            /* We start with a transparent border so adding one later doesn't shift the page */
+            border: 1px solid transparent; 
+            box-sizing: border-box;
+        }
+        /* This is the class we will add to the predicted button */
+        .highlight-border {
+            border: 1px solid #000; 
+        }
     </style>
 </head>
 <body>
     <h2>Where would you like to buy the book?</h2>
-    <a href="https://www.amazon.com/dp/B0GR58NWXG" class="btn">Amazon US (.com)</a>
-    <a href="https://www.amazon.nl/dp/B0GR58NWXG" class="btn">Amazon Netherlands (.nl)</a>
-    <a href="https://www.amazon.fr/dp/B0GR58NWXG" class="btn">Amazon France (.fr)</a>
-    <a href="https://www.amazon.co.uk/dp/B0GR58NWXG" class="btn">Amazon UK (.co.uk)</a>
-    <a href="https://www.amazon.ca/dp/B0GR58NWXG" class="btn">Amazon Canada (.ca)</a>
-    <a href="https://www.amazon.de/dp/B0GR58NWXG" class="btn">Amazon Germany (de)</a>
-    <a href="https://www.amazon.es/dp/B0GR58NWXG" class="btn">Amazon Spain (.es)</a>
-    <a href="https://www.amazon.it/dp/B0GR58NWXG" class="btn">Amazon Italy (.it)</a>
-    <a href="https://www.amazon.com.au/dp/B0GR58NWXG" class="btn">Amazon Australia (.com.au)</a>
-    <a href="https://www.amazon.co.jp/dp/B0GR58NWXG" class="btn">Amazon Japan (.co.jp)</a>
-    <a href="https://www.amazon.com.mx/dp/B0GR58NWXG" class="btn">Amazon Mexico (.com.mx)</a>
-    <a href="https://www.amazon.com.br/dp/B0GR58NWXG" class="btn">Amazon Brazil (.com.br)</a>
-    <a href="https://www.amazon.in/dp/B0GR58NWXG" class="btn">Amazon India (.in)</a>
+    
+    <div id="store-buttons">
+        <a id="btn-us" href="https://www.amazon.com/dp/B0GR58NWXG" class="btn">Amazon US (.com)</a>
+        <a id="btn-nl" href="https://www.amazon.nl/dp/B0GR58NWXG" class="btn">Amazon Netherlands (.nl)</a>
+        <a id="btn-fr" href="https://www.amazon.fr/dp/B0GR58NWXG" class="btn">Amazon France (.fr)</a>
+        <a id="btn-uk" href="https://www.amazon.co.uk/dp/B0GR58NWXG" class="btn">Amazon UK (.co.uk)</a>
+        <a id="btn-ca" href="https://www.amazon.ca/dp/B0GR58NWXG" class="btn">Amazon Canada (.ca)</a>
+        <a id="btn-de" href="https://www.amazon.de/dp/B0GR58NWXG" class="btn">Amazon Germany (.de)</a>
+        <a id="btn-es" href="https://www.amazon.es/dp/B0GR58NWXG" class="btn">Amazon Spain (.es)</a>
+        <a id="btn-it" href="https://www.amazon.it/dp/B0GR58NWXG" class="btn">Amazon Italy (.it)</a>
+        <a id="btn-au" href="https://www.amazon.com.au/dp/B0GR58NWXG" class="btn">Amazon Australia (.com.au)</a>
+        <a id="btn-jp" href="https://www.amazon.co.jp/dp/B0GR58NWXG" class="btn">Amazon Japan (.co.jp)</a>
+        <a id="btn-mx" href="https://www.amazon.com.mx/dp/B0GR58NWXG" class="btn">Amazon Mexico (.com.mx)</a>
+        <a id="btn-br" href="https://www.amazon.com.br/dp/B0GR58NWXG" class="btn">Amazon Brazil (.com.br)</a>
+        <a id="btn-in" href="https://www.amazon.in/dp/B0GR58NWXG" class="btn">Amazon India (.in)</a>
+    </div>
+
+    <script>
+        // Wait for the page to load before moving things around
+        document.addEventListener("DOMContentLoaded", function() {
+            var lang = (navigator.language || navigator.userLanguage).toLowerCase();
+            var targetId = "";
+
+            // Figure out which ID matches their language
+            if (lang === "en-gb") { targetId = "btn-uk"; }
+            else if (lang === "en-ca" || lang === "fr-ca") { targetId = "btn-ca"; }
+            else if (lang === "en-au") { targetId = "btn-au"; }
+            else if (lang === "en-in" || lang.startsWith("hi")) { targetId = "btn-in"; }
+            else if (lang === "es-mx") { targetId = "btn-mx"; }
+            else if (lang.startsWith("en")) { targetId = "btn-us"; }
+            else if (lang.startsWith("nl")) { targetId = "btn-nl"; }
+            else if (lang.startsWith("fr")) { targetId = "btn-fr"; }
+            else if (lang.startsWith("de")) { targetId = "btn-de"; }
+            else if (lang.startsWith("es")) { targetId = "btn-es"; }
+            else if (lang.startsWith("it")) { targetId = "btn-it"; }
+            else if (lang.startsWith("ja")) { targetId = "btn-jp"; }
+            else if (lang.startsWith("pt")) { targetId = "btn-br"; }
+
+            // If we found a match, move it and add the border
+            if (targetId !== "") {
+                var suggestedBtn = document.getElementById(targetId);
+                var container = document.getElementById("store-buttons");
+                
+                if (suggestedBtn && container) {
+                    suggestedBtn.classList.add("highlight-border");
+                    container.prepend(suggestedBtn); // This snaps the button to the very top of the div
+                }
+            }
+        });
+    </script>
 </body>
 </html>
